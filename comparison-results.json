@@ -1,0 +1,191 @@
+{
+  "method": "Local TypeScript compilation of exported pure modules; execution of Appsmith published action bodies in Node VM; not a full platform or browser rerun.",
+  "rows": [
+    {
+      "id": "T1",
+      "start": "12:00",
+      "duration": 60,
+      "blocked": false,
+      "expected": "available",
+      "code": "available",
+      "low": "available",
+      "codePass": true,
+      "lowPass": true
+    },
+    {
+      "id": "T2",
+      "start": "10:30",
+      "duration": 60,
+      "blocked": false,
+      "expected": "overlapping",
+      "code": "overlapping",
+      "low": "overlapping",
+      "codePass": true,
+      "lowPass": true
+    },
+    {
+      "id": "T3",
+      "start": "12:00",
+      "duration": 60,
+      "blocked": true,
+      "expected": "blocked",
+      "code": "blocked",
+      "low": "blocked",
+      "codePass": true,
+      "lowPass": true
+    },
+    {
+      "id": "T4",
+      "start": "12:00",
+      "duration": 0,
+      "blocked": false,
+      "expected": "invalid-time",
+      "code": "invalid-time",
+      "low": "invalid-time",
+      "codePass": true,
+      "lowPass": true
+    },
+    {
+      "id": "T5",
+      "start": "12:00",
+      "duration": 121,
+      "blocked": false,
+      "expected": "too-long",
+      "code": "too-long",
+      "low": "too-long",
+      "codePass": true,
+      "lowPass": true
+    },
+    {
+      "id": "T6",
+      "start": "08:00",
+      "duration": 60,
+      "blocked": false,
+      "expected": "past-request",
+      "code": "past-request",
+      "low": "past-request",
+      "codePass": true,
+      "lowPass": true
+    },
+    {
+      "id": "T7",
+      "start": "11:00",
+      "duration": 60,
+      "blocked": false,
+      "expected": "available",
+      "code": "available",
+      "low": "available",
+      "codePass": true,
+      "lowPass": true
+    },
+    {
+      "id": "T8",
+      "expected": "unchanged",
+      "code": "unchanged",
+      "low": "unchanged",
+      "codePass": true,
+      "lowPass": true
+    }
+  ],
+  "extra": [
+    {
+      "start": "25:00",
+      "duration": 60,
+      "blocked": false,
+      "code": "invalid-time",
+      "low": "invalid-time"
+    },
+    {
+      "start": "9:30",
+      "duration": 15,
+      "blocked": false,
+      "code": "available",
+      "low": "invalid-time"
+    },
+    {
+      "start": "10:30",
+      "duration": 60,
+      "blocked": true,
+      "code": "overlapping",
+      "low": "blocked"
+    },
+    {
+      "start": "23:30",
+      "duration": 121,
+      "blocked": false,
+      "code": "invalid-time",
+      "low": "too-long"
+    },
+    {
+      "start": "12:00",
+      "duration": "",
+      "blocked": false,
+      "code": "invalid-time",
+      "low": "invalid-time"
+    },
+    {
+      "start": "12:00",
+      "duration": 1.5,
+      "blocked": false,
+      "code": "invalid-time",
+      "low": "invalid-time"
+    },
+    {
+      "start": "09:00",
+      "duration": 60,
+      "blocked": false,
+      "code": "past-request",
+      "low": "past-request"
+    }
+  ],
+  "appsmithOwnTests": [
+    {
+      "test": "T1",
+      "expected": "available",
+      "actual": "available",
+      "status": "PASS"
+    },
+    {
+      "test": "T2",
+      "expected": "overlapping",
+      "actual": "overlapping",
+      "status": "PASS"
+    },
+    {
+      "test": "T3",
+      "expected": "blocked",
+      "actual": "blocked",
+      "status": "PASS"
+    },
+    {
+      "test": "T4",
+      "expected": "invalid-time",
+      "actual": "invalid-time",
+      "status": "PASS"
+    },
+    {
+      "test": "T5",
+      "expected": "too-long",
+      "actual": "too-long",
+      "status": "PASS"
+    },
+    {
+      "test": "T6",
+      "expected": "past-request",
+      "actual": "past-request",
+      "status": "PASS"
+    },
+    {
+      "test": "T7",
+      "expected": "available",
+      "actual": "available",
+      "status": "PASS"
+    },
+    {
+      "test": "T8",
+      "expected": "Bookings unchanged",
+      "actual": "Bookings unchanged",
+      "status": "PASS"
+    }
+  ]
+}

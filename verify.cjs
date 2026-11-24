@@ -1,0 +1,12 @@
+const fs=require('node:fs'), vm=require('node:vm'), assert=require('node:assert/strict');
+const engine=require('./compiled/availability.js'), data=require('./compiled/demoData.js');
+const j=JSON.parse(fs.readFileSync(require('node:path').join(__dirname,'SmartCampus_LowCode.json'),'utf8'));
+const ctx=vm.createContext({Availability:{bookings:[{start:600,end:660}]}});
+for (const a of j.actionList){const act=a.publishedAction;ctx.Availability[act.name]=vm.runInContext('('+act.actionConfiguration.body+')',ctx);}
+const c=(start,duration,blocked)=>{const s=engine.parseTime(start),d=engine.parseDuration(String(duration));if(s===null||d===null)return {available:false,reason:'invalid-time',message:'Invalid input'};return engine.evaluateDurationRequest({roomId:data.ROOM.id,start:s,duration:d,now:data.SIMULATED_NOW,blocked,bookings:data.EXISTING_BOOKINGS});};
+const l=(s,d,b)=>ctx.Availability.evaluate(s,d,b);
+const beforeC=JSON.stringify(data.EXISTING_BOOKINGS),beforeL=JSON.stringify(ctx.Availability.bookings);
+const rows=[];for(const [id,s,d,b,e] of [['T1','12:00',60,false,'available'],['T2','10:30',60,false,'overlapping'],['T3','12:00',60,true,'blocked'],['T4','12:00',0,false,'invalid-time'],['T5','12:00',121,false,'too-long'],['T6','08:00',60,false,'past-request'],['T7','11:00',60,false,'available']]){const x=c(s,d,b),y=l(s,d,b);rows.push({id,start:s,duration:d,blocked:b,expected:e,code:x.reason,low:y.reasonCode,codePass:x.reason===e&&x.available===(e==='available')&&!!x.message,lowPass:y.reasonCode===e&&y.available===(e==='available')&&!!y.message});}
+rows.push({id:'T8',expected:'unchanged',code:JSON.stringify(data.EXISTING_BOOKINGS)===beforeC?'unchanged':'changed',low:JSON.stringify(ctx.Availability.bookings)===beforeL?'unchanged':'changed',codePass:JSON.stringify(data.EXISTING_BOOKINGS)===beforeC,lowPass:JSON.stringify(ctx.Availability.bookings)===beforeL});
+const extra=[['25:00',60,false],['9:30',15,false],['10:30',60,true],['23:30',121,false],['12:00','',false],['12:00',1.5,false],['09:00',60,false]].map(([s,d,b])=>({start:s,duration:d,blocked:b,code:c(s,d,b).reason,low:l(s,d,b).reasonCode}));
+const out={method:'Local TypeScript compilation of exported pure modules; execution of Appsmith published action bodies in Node VM; not a full platform or browser rerun.',rows,extra,appsmithOwnTests:ctx.Availability.runTests()};console.log(JSON.stringify(out,null,2));assert(rows.every(r=>r.codePass&&r.lowPass));
